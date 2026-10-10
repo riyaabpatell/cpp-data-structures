@@ -1,62 +1,107 @@
+# C++ Data Structures
 
-# Dual-Sorted Doubly Linked List (C++)
+A collection of C++ data structure implementations focused on
+understanding memory management, pointer manipulation, sorting,
+and algorithmic efficiency.
 
-A C++ implementation of a custom linked-list data
-structure that maintains records in two independent
-sorted orders without duplicating the underlying nodes.
+This repository documents my work with fundamental data structures
+and provides automated tests to verify correctness.
 
-## Overview
+## Projects
 
-Each node stores a name and a weight, along with
-four pointers:
+### Dual-Sorted Doubly Linked List
 
-- `namePrev` and `nameNext`
-- `weightPrev` and `weightNext`
+**Location:** `linked-lists/dual-sorted-list.cpp`
 
-These pointers allow the same records to be traversed
-alphabetically by name or numerically by weight.
+A custom linked list that maintains two independent sorted
+orderings of the same collection of records.
 
-## Features
+Each record contains a name and a weight. Rather than storing
+two separate copies of the data, each node maintains two sets
+of pointers, allowing the list to be traversed in either order.
 
-- Dynamically allocates nodes
-- Maintains two sorted doubly linked chains
-- Supports insertion in both sorted orders
-- Traverses and prints records by name or weight
-- Releases dynamically allocated memory
-- Prevents accidental copying of owning pointers
+**Key Features**
+- Implemented in C++ using classes and pointers
+- Maintains alphabetical ordering by name
+- Maintains numerical ordering by weight
+- Uses separate next and previous pointers for each ordering
+- Supports insertion while preserving both sorted orderings
+- Handles duplicate names and weights
+- Includes automated tests for sorting and data integrity
 
-## Time Complexity
-
-| Operation | Complexity |
-|-----------|------------|
-| Insert record | O(n) |
-| Traverse by name | O(n) |
-| Traverse by weight | O(n) |
-| Store n records | O(n) space |
+**Concepts Demonstrated**
+- Object-oriented programming
+- Doubly linked lists
+- Dynamic memory allocation
+- Pointer manipulation
+- Custom sorting logic
+- Algorithm analysis
+- Automated testing
 
 ## Technologies
 
-- C++
-- Pointers and dynamic memory management
-- Doubly linked lists
-- Object-oriented programming
+- C++17
+- Python 3 (automated testing)
+- Clang++ compiler
+- Python unittest framework
+- Git and GitHub
 
 ## How to Run
 
-Compile:
+Clone the repository:
 
 ```bash
-clang++ -std=c++17 -Wall -Wextra -pedantic dual-sorted-list.cpp -o dual-sorted-list
+git clone https://github.com/riyaabpatell/cpp-data-structures.git
+cd cpp-data-structures
 ```
 
-Run:
+Compile the program:
+
+```bash
+clang++ -std=c++17 -Wall -Wextra -pedantic \
+linked-lists/dual-sorted-list.cpp -o dual-sorted-list
+```
+
+Run the program:
 
 ```bash
 ./dual-sorted-list
 ```
 
-Enter 15 name-and-weight pairs when prompted.
+The program prompts for 15 name-weight records and displays
+the records sorted alphabetically and numerically.
 
-## Background
+## Automated Testing
 
-Based on a data structures coursework assignment, with the implementation reconstructed and reviewed for this repository.
+The project includes three automated tests covering:
+
+1. Correct alphabetical and numerical sorting
+2. Handling duplicate names and weights
+3. Preserving name-weight associations across both orderings
+
+Run all tests from the repository root:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+## Complexity Analysis
+
+| Operation | Time Complexity |
+|-----------|-----------------|
+| Insert a record | O(n) |
+| Traverse by name | O(n) |
+| Traverse by weight | O(n) |
+| Additional pointer storage per node | O(1) |
+
+Each insertion searches for the correct position in both
+sorted orderings. Traversal visits each node once.
+
+## Project Background
+
+This implementation was reconstructed and expanded from
+data structures coursework to revisit fundamental C++
+concepts and practice software testing.
+
+The repository is intended to grow as I continue developing
+and documenting additional data structure implementations.
