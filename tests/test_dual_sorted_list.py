@@ -1,3 +1,4 @@
+
 import subprocess
 import tempfile
 import unittest
@@ -146,6 +147,53 @@ class TestDualSortedList(unittest.TestCase):
             actual_weights,
             sorted(weight for _, weight in records)
         )
+
+    def test_name_weight_associations(self):
+        input_data = "".join(
+            f"{name}\n{weight}\n"
+            for name, weight in RECORDS
+        )
+
+        result = subprocess.run(
+            [str(self.executable)],
+            input=input_data,
+            text=True,
+            capture_output=True,
+            timeout=5,
+            check=True,
+        )
+
+        output = result.stdout
+
+        name_section = output.split("Sorted by name:\n")[1]
+        name_section = name_section.split("\nSorted by weight:\n")[0]
+
+        weight_section = output.split("Sorted by weight:\n")[1]
+
+        def parse_records(section):
+            return [
+                (name, float(weight))
+                for name, weight in (
+                    line.rsplit(" - ", 1)
+                    for line in section.strip().splitlines()
+                )
+            ]
+
+        actual_by_name = parse_records(name_section)
+        actual_by_weight = parse_records(weight_section)
+
+        expected_by_name = sorted(
+            RECORDS,
+            key=lambda record: record[0]
+        )
+
+        expected_by_weight = sorted(
+            RECORDS,
+            key=lambda record: record[1]
+        )
+
+        self.assertEqual(actual_by_name, expected_by_name)
+        self.assertEqual(actual_by_weight, expected_by_weight)
 
 
 if __name__ == "__main__":
