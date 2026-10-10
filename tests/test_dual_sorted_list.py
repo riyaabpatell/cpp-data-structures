@@ -1,8 +1,8 @@
-
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "linked-lists" / "dual-sorted-list.cpp"
@@ -88,6 +88,64 @@ class TestDualSortedList(unittest.TestCase):
 
         self.assertEqual(actual_names, expected_names)
         self.assertEqual(actual_weights, expected_weights)
+
+    def test_duplicate_names_and_weights(self):
+        records = [
+            ("Alice", 120),
+            ("Alice", 150),
+            ("Bob", 120),
+            ("Charlie", 150),
+            ("David", 130),
+            ("Emma", 140),
+            ("Frank", 160),
+            ("Grace", 110),
+            ("Henry", 170),
+            ("Ivy", 180),
+            ("Jack", 190),
+            ("Kate", 200),
+            ("Liam", 210),
+            ("Mia", 220),
+            ("Noah", 230),
+        ]
+
+        input_data = "".join(
+            f"{name}\n{weight}\n"
+            for name, weight in records
+        )
+
+        result = subprocess.run(
+            [str(self.executable)],
+            input=input_data,
+            text=True,
+            capture_output=True,
+            timeout=5,
+            check=True,
+        )
+
+        name_section = result.stdout.split("Sorted by name:\n")[1]
+        name_section = name_section.split("\nSorted by weight:\n")[0]
+
+        weight_section = result.stdout.split("Sorted by weight:\n")[1]
+
+        actual_names = [
+            line.rsplit(" - ", 1)[0]
+            for line in name_section.strip().splitlines()
+        ]
+
+        actual_weights = [
+            float(line.rsplit(" - ", 1)[1])
+            for line in weight_section.strip().splitlines()
+        ]
+
+        self.assertEqual(
+            actual_names,
+            sorted(name for name, _ in records)
+        )
+
+        self.assertEqual(
+            actual_weights,
+            sorted(weight for _, weight in records)
+        )
 
 
 if __name__ == "__main__":
